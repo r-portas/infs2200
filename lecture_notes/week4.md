@@ -39,21 +39,23 @@
     2. __Rotational delay__: Waiting for block to rotate under the head
     3. __Transfer time__: Moving data to/from disk surface
 
-$$Track Capacity = Number of sectors * sector size$$
+```
+Track Capacity = Number of sectors * sector size
 
-$$Surface Capacity = Number of tracks * track capacity$$
+Surface Capacity = Number of tracks * track capacity
 
-$$Disk Capacity = Number of surfaces * surface capacity$$
+Disk Capacity = Number of surfaces * surface capacity
 
-$$Maximum rotational delay (seconds) = 60 / Rotational Speed in RPM$$
+Maximum rotational delay (seconds) = 60 / Rotational Speed in RPM
 
-$$Average rotational delay (seconds) = 60 / (Rotational Speed in RPM * 2)$$
+Average rotational delay (seconds) = 60 / (Rotational Speed in RPM * 2)
 
-$$Transfer rate = track capacity / revolution time$$
+Transfer rate = track capacity / revolution time
 
-$$Average track access time = average seek time + average rotational delay + track transfer time$$
+Average track access time = average seek time + average rotational delay + track transfer time
 
-$$Average block access time = seek time + rotational delay + transfer time$$
+Average block access time = seek time + rotational delay + transfer time
+```
 
 ## Data Elements
 - __Field__: A database attribute (sequence of bytes)
@@ -79,7 +81,7 @@ $$Average block access time = seek time + rotational delay + transfer time$$
     - Timestamp
     - Links to other blocks of the same table/file
     - Free list
-- $Blocking factor = block size / record size$
+- ```Blocking factor = block size / record size```
 - Block spanning methods:
     - __Unspanned__: Records are not allowed to cross block boundaries
     - __Spanned__: A record can span more than one block
