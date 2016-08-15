@@ -152,19 +152,19 @@ $$Average block access time = seek time + rotational delay + transfer time$$
 - A __file descriptor__ includes information that describe the file
 
 ### Fixed Length Records
-    - __Pros__
-        - No space is needed for storing extra info for the files within records (i.e. file ending characters)
-        - Equally fast access to all fields
-        - Fixed field length simplifies insert, delete and update
-    - __Cons__
-        - Block internal fragmentation (Due to unspanned organisation)
-        - Record internal fragmentation (Due to using maximum length of each field)
-        - More disk accesses for reading a given number of records
+- Pros
+    - No space is needed for storing extra info for the files within records (i.e. file ending characters)
+    - Equally fast access to all fields
+    - Fixed field length simplifies insert, delete and update
+- __Cons__
+    - Block internal fragmentation (Due to unspanned organisation)
+    - Record internal fragmentation (Due to using maximum length of each field)
+    - More disk accesses for reading a given number of records
 
 ### Variable length records
-    - Pros
-        - No record internal fragmentation (Saves space)
-    - Cons
-        - Access time for field is proportional to the distance from the beginning of the record
-        - Not easy to reuse space which was occupied by a deleted record
-        - No space for record to __grow__ longer
+- Pros
+    - No record internal fragmentation (Saves space)
+- Cons
+    - Access time for field is proportional to the distance from the beginning of the record
+    - Not easy to reuse space which was occupied by a deleted record
+    - No space for record to __grow__ longer
