@@ -162,9 +162,9 @@ $$Average block access time = seek time + rotational delay + transfer time$$
         - More disk accesses for reading a given number of records
 
 ### Variable length records
-    - __Pros__
+    - Pros
         - No record internal fragmentation (Saves space)
-    - __Cons__
+    - Cons
         - Access time for field is proportional to the distance from the beginning of the record
         - Not easy to reuse space which was occupied by a deleted record
         - No space for record to __grow__ longer
