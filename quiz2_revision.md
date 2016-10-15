@@ -46,3 +46,39 @@
     - If it is a key field, i.e. unique, then it points to a data block that contains the record
     - If it is a non-key field (repeated), then it points to a block containing pointers, such as a secondary index
 
+- __Next Pointers__
+    - Points to the next leaf node
+    - Leaf nodes are linked to provide ordered access on the indexing field
+    - Useful for range search
+
+### Insertion and Deletion
+- __Insertion__
+    - Into a node that is not full is quite efficient
+    - If a node is full it is split into two nodes
+    - Splitting may propagate to other tree levels
+- __Deletion_
+    - Efficient if a node remains more than half full
+    - Otherwise, it is merged with neighboring nodes
+
+### Insertion Algorithm
+```
+Find correct leaf L
+Put new entry onto L
+If L has enough space:
+    return
+Else:
+    redistribute entries evenly
+        If L is of order p, then floor((p + 1) / 2) entries stay in L and rest move to L_new
+    copy up first key in L_new into L's parent
+    Insert pointer to L_new into L's parent
+```
+
+### Search
+- Read one block at each level in the index
+    - Number of accessed index blocks = tree height
+- Total number of accessed blocks = tree height + 1
+- Tree height is proportional to log entries to base fan out factor
+- Fan out factor = index blocking factor = block size/entry size
+- Aim to minimize entry size
+- Index entry = <key entry, pointer>
+- The smaller the szie of the key value, the more efficient the B+ tree (i.e. shorter)
