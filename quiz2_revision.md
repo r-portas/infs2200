@@ -56,7 +56,7 @@
     - Into a node that is not full is quite efficient
     - If a node is full it is split into two nodes
     - Splitting may propagate to other tree levels
-- __Deletion_
+- __Deletion__
     - Efficient if a node remains more than half full
     - Otherwise, it is merged with neighboring nodes
 
@@ -82,3 +82,58 @@ Else:
 - Aim to minimize entry size
 - Index entry = <key entry, pointer>
 - The smaller the szie of the key value, the more efficient the B+ tree (i.e. shorter)
+
+## Query Optimisation
+
+### Conceptual Evaluation Strategy
+1. Compute the cross-product of from-list
+2. Discard resulting tuples that fail qualification
+3. Delete attributes that are not in select-list
+4. If DISTINCT is specified, eliminate duplicate rows
+
+- Strategy is probably the least efficient way to compute a query
+- An optimizer will find more efficient strategies to compute the same answer
+
+### Streps in Processing a Query
+- Scan, Parse, Validate SQL statement
+- Optimize query
+- Query code generator
+- Runtime DB Processor
+
+### Operations of Relational Algebra
+- SELECT
+    - Selects all tuples that satify a condition
+
+- PROJECT
+    - Produces a new relation with only some of the attributes from R
+
+- THETA JOIN
+    - Produces a combination of tuples from ...
+
+- EQUIJOIN
+    - Produces all the combinations of tuples from both tables that satify a join condition without only equality comparisions
+
+- NATURAL JOIN
+    - Same as EQUIJOIN except no duplicates columns for the attribute being compared
+
+- UNION
+    - OR
+
+- INTERSECTION
+    - AND
+
+- DIFFERENCE
+    - Produces a relation that includes all tuples in one table that aren't in the other table
+
+- CARTESIAN PRODUCT
+    - Produces a relation that has every possible combination of both tables
+
+- DIVISION
+    - Produces a relation that includes all tuples that appear in the first table in combination with every tuple from the second table
+
+### Optimizing Select
+
+Select fastest method
+1. Use index
+2. Use binary search
+3. Use brute force linear approach
