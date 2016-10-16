@@ -131,9 +131,121 @@ Else:
 - DIVISION
     - Produces a relation that includes all tuples that appear in the first table in combination with every tuple from the second table
 
+
+### How to Implement Selection
+
+Depends on:
+- Point query
+- Range query
+- Conjunction
+- Disjunction
+
 ### Optimizing Select
+
+No Index, Unsorted Data: Linear Search
+
+No Index, Sorted Data: Binary Search
+
+Index: Use Index
 
 Select fastest method
 1. Use index
 2. Use binary search
 3. Use brute force linear approach
+
+### Select with Conjunctions
+
+- Using a composite index
+    - Use if a composite index exists on the combined field
+- Conjunction selection:
+    - If an attribute in the conjunctive condition has an index, then:
+    - Use that index to retrieve the records
+    - For each retrieved recrod, check if it statisfies the remaining conditions in the conjunction
+
+If there are multiple indexes, choose the one that retrieves the fewest records
+
+### Selectivity
+
+- The ratio of the number fo records that satisfy a condition to the total number of records
+- Should be between 0 and 1
+
+### Cross Product
+
+- Each row of table 1 is paired with __each__ row of table 2
+- Result has one field per field of table 1 and table 2
+    - Field names inherited if possible
+
+### Conditional Join
+
+- Condition on the join, such as select every id which is lower than the id in the other table
+
+### Equijoin
+
+- Special case of conditional join where condition contains only equalities
+
+### Natural Joins
+
+#### Nested Loop Joins
+- Essentially two for loops
+- Total number of block reads = `Bt + Nt x Bs`
+
+#### Nested Loop Join - Page at a Time
+- `Bt + Bt x Bs`
+
+#### Block Nested Loop Join
+- Read a chunk of blocks from T instead of only one
+
+```
+Let buffer size be Nb memory blocks
+    One block for buffering result
+    One block for reading from the inner file
+    Then, remaining Nb - 2
+        Read as much as:
+        Nb - 2 blocks at a time from the outer file
+```
+
+- Bt + (Bt/(Nb - 2)) x Bs
+- Order matters, the smaller file should be the outer file
+
+### Single Loop Join
+
+- Only works if an index exists for one of the two joins attributes
+- Cost in number of block accesses: `B(outer) + (N(outer) x (L(index) + 1))`
+
+### Outer Join
+- Join selects only tuples satisfying the join condition
+- __Outer Join__
+    - Left outer join keeps every tuple in the left relation
+    - Right outer join keeps every tuple in the right relation
+    - Full outer join keeps every tuple
+- Attributes of tuples with no matching tuples are set to NULL
+
+### Optimization of Query Trees
+- Get Initial Query Tree
+    1. Apply Cartesian Product of relations in __FROM__
+    2. Selection and Join conditions of __WHERE__ is applied
+    3. Project on attributes in __SELECT__
+- Transform it into an equilvalent query tree
+    - Represents a different relational expression
+    - Gives the same result
+    - More efficient to execute
+
+### General Transformation Rules
+
+- Cascade of selection
+    - `A and B -> A(B)`
+- Commutativity of selection
+    - `A(B) = B(A)`
+    - Execute the one that returns the fewest records first
+- Cascade of projection
+    - `A(BC) = A`
+    - All but the last can be ignored
+- Commuting with selection and projection
+    - Move selection to the outside, so the projection is done first
+
+### Outline of Algebraic Optimization
+- Break up selections into a cascade of selection operators
+- Push selection operators as far down in the tree as possible
+- Convert Cartesian products into joins
+- Rearrange leaf nodes so that execute first the most restrictive select operators
+- Move projections as far down as possible
