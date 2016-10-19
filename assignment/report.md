@@ -221,3 +221,127 @@ A bird of the species Australian pied cormorant was spotted in the north-east pa
 A bird of the species Mrs. Humes pheasant was spotted in the north-east part of the observation area
 
 ```
+
+## Task 3: Views
+
+### Part A
+```sql
+create or replace view V_ORGANISATION_BIRD_COUNT as select org.ORGANISATION_NAME, count(*) "bird_count"
+from ORGANISATIONS org
+inner join SPOTTERS sp
+	on org.ORGANISATION_ID = sp.ORGANISATION_ID
+inner join SIGHTINGS si
+	on sp.SPOTTER_ID = si.SPOTTER_ID
+group by ORGANISATION_NAME;
+```
+
+Output:
+```
+View created.
+
+```
+
+### Part B
+```sql
+create materialized view MV_ORGANISATION_BIRD_COUNT as select org.ORGANISATION_NAME, count(*) "bird_count"
+from ORGANISATIONS org
+inner join SPOTTERS sp
+	on org.ORGANISATION_ID = sp.ORGANISATION_ID
+inner join SIGHTINGS si
+	on sp.SPOTTER_ID = si.SPOTTER_ID
+group by ORGANISATION_NAME;
+
+```
+
+Output:
+```
+
+Materialized view created.
+
+```
+
+### Part C
+```sql
+SELECT * FROM V_ORGANISATION_BIRD_COUNT;
+```
+
+![Part 1](images/task3_1.PNG)
+
+```sql
+SELECT * FROM MV_ORGANISATION_BIRD_COUNT;
+```
+
+![Part 2](images/task3_2.PNG)
+
+## Task 4: Function Based Indexes
+
+### Part A
+
+```sql
+select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) as DISTANCE from SIGHTINGS;
+```
+
+![Part 1](images/task4_1.PNG)
+
+### Part B
+
+```sql
+create index IDX_HEADQUARTERS_DISTANCE on SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
+```
+
+### Part C
+
+```sql
+select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) as DISTANCE from SIGHTINGS;
+```
+
+![Part 2](images/task4_2.PNG)
+
+The index will be indexing the queries, so when the database goes to calculate the distance, it will first look up
+the equation in the index, and return the precomputed value if found.
+
+We don't get massive performance boosts because a lot of the distances are unique. However if there was 
+many duplicates, such as birds at the exact same position, there would be more noticable improvments.
+
+## Task 5: Execution Plan and Analysis
+
+### Part A
+
+```sql
+explain plan for select SIGHTING_ID, SPOTTER_NAME, SIGHTING_DATE 
+from SIGHTINGS 
+inner join SPOTTERS
+	on SPOTTERS.SPOTTER_ID = SIGHTINGS.SPOTTER_ID
+where SIGHTINGS.SPOTTER_ID = 1255;
+
+SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
+```
+
+![Part 1](images/task5_1.PNG)
+
+The query plan can be described as a series of steps:
+
+1. Run a index scan on the `SPOTTER_ID` in the `SPOTTERS` table to evaluate the where clause
+2. Rows are located by the `ROWID` index in the `SPOTTERS` table and the the entire `SIGHTINGS` table is read
+3. The `SPOTTERS` table becomes the outer loop and the `SIGHTINGS` table becomes the inner loop, it then joins the tables with a nested loop
+4. Apply the select statement on the result
+
+### Part B
+
+```sql
+alter table SIGHTINGS
+drop constraint FK_SPOTTER_ID_TO_SPOTTER_ID;
+
+alter table SPOTTERS
+drop constraint PK_SPOTTER_ID;
+
+explain plan for select SIGHTING_ID, SPOTTER_NAME, SIGHTING_DATE 
+from SIGHTINGS 
+inner join SPOTTERS
+	on SPOTTERS.SPOTTER_ID = SIGHTINGS.SPOTTER_ID
+where SIGHTINGS.SPOTTER_ID = 1255;
+
+SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
+```
+
+

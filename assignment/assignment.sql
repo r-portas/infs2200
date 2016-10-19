@@ -142,6 +142,9 @@ where SIGHTINGS.SPOTTER_ID = 1255;
 SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 
 /* Part B */
+alter table SIGHTINGS
+drop constraint FK_SPOTTER_ID_TO_SPOTTER_ID;
+
 alter table SPOTTERS
 drop constraint PK_SPOTTER_ID;
 
