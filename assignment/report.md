@@ -146,13 +146,15 @@ begin
 		/* Its less than the middle latitude, thus south */
 		if :NEW.longitude < 151.25 then
 			/* Its less than the middle longitude */
-			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), ' was spotted in the south-west part of the observation area' )
+			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME),
+                            ' was spotted in the south-west part of the observation area' )
 			into :NEW.DESCRIPTION from DUAL
 			inner join BIRDS
 			on BIRDS.BIRD_ID = :NEW.BIRD_ID;
 		else
 			/* Its greater than the middle longitude */
-			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), ' was spotted in the south-east part of the observation area' )
+			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), 
+                            ' was spotted in the south-east part of the observation area' )
 			into :NEW.DESCRIPTION from DUAL
 			inner join BIRDS
 			on BIRDS.BIRD_ID = :NEW.BIRD_ID;
@@ -161,13 +163,15 @@ begin
 		/* Its greater than the middle latitude */
 		if :NEW.longitude < 151.25 then
 			/* Its less than the middle longitude */
-			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), ' was spotted in the north-west part of the observation area' )
+			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), 
+                            ' was spotted in the north-west part of the observation area' )
 			into :NEW.DESCRIPTION from DUAL
 			inner join BIRDS
 			on BIRDS.BIRD_ID = :NEW.BIRD_ID;
 		else
 			/* Its greater than the middle longitude */
-			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), ' was spotted in the north-east part of the observation area' )
+			select CONCAT(CONCAT('A bird of the species ', BIRD_NAME), 
+                            ' was spotted in the north-east part of the observation area' )
 			into :NEW.DESCRIPTION from DUAL
 			inner join BIRDS
 			on BIRDS.BIRD_ID = :NEW.BIRD_ID;
@@ -213,7 +217,7 @@ Output:
 SIGHTING_ID SPOTTER_ID    BIRD_ID   LATITUDE  LONGITUDE SIGHTING_
 ----------- ---------- ---------- ---------- ---------- ---------
 DESCRIPTION
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
      300000       2457        901        -28        152 09/MAR/16
 A bird of the species Australian pied cormorant was spotted in the north-east part of the observation area
 
@@ -243,7 +247,8 @@ View created.
 
 ### Part B
 ```sql
-create materialized view MV_ORGANISATION_BIRD_COUNT as select org.ORGANISATION_NAME, count(*) "bird_count"
+create materialized view MV_ORGANISATION_BIRD_COUNT as 
+select org.ORGANISATION_NAME, count(*) "bird_count"
 from ORGANISATIONS org
 inner join SPOTTERS sp
 	on org.ORGANISATION_ID = sp.ORGANISATION_ID
@@ -266,36 +271,43 @@ SELECT * FROM V_ORGANISATION_BIRD_COUNT;
 ```
 
 ![Part 1](images/task3_1.PNG)
+\ 
 
 ```sql
 SELECT * FROM MV_ORGANISATION_BIRD_COUNT;
 ```
 
 ![Part 2](images/task3_2.PNG)
+\ 
 
 ## Task 4: Function Based Indexes
 
 ### Part A
 
 ```sql
-select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) as DISTANCE from SIGHTINGS;
+select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) 
+as DISTANCE from SIGHTINGS;
 ```
 
 ![Part 1](images/task4_1.PNG)
+\ 
 
 ### Part B
 
 ```sql
-create index IDX_HEADQUARTERS_DISTANCE on SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
+create index IDX_HEADQUARTERS_DISTANCE on 
+SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
 ```
 
 ### Part C
 
 ```sql
-select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) as DISTANCE from SIGHTINGS;
+select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) 
+as DISTANCE from SIGHTINGS;
 ```
 
 ![Part 2](images/task4_2.PNG)
+\ 
 
 The index will be indexing the queries, so when the database goes to calculate the distance, it will first look up
 the equation in the index, and return the precomputed value if found.
@@ -318,6 +330,7 @@ SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 ```
 
 ![Part 1](images/task5_1.PNG)
+\ 
 
 The query plan can be described as a series of steps:
 
