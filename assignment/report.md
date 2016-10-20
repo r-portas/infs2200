@@ -10,6 +10,7 @@ select * from USER_CONSTRAINTS;
 ```
 
 Output:
+
 ![Part 1](images/task1_1.PNG)
 \ 
 
