@@ -125,7 +125,12 @@ group by ORGANISATION_NAME;
 /* Task 4: function Based Indexes */
 
 /* Part A */
-select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) as DISTANCE from SIGHTINGS;
+select * from (
+    select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2))
+    as DISTANCE 
+    from SIGHTINGS
+    order by DISTANCE desc
+) where ROWNUM <= 1;
 
 /* Part B #TODO: Verify*/
 create index IDX_HEADQUARTERS_DISTANCE on SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));

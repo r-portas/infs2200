@@ -244,8 +244,12 @@ SELECT * FROM MV_ORGANISATION_BIRD_COUNT;
 ### Part A
 
 ```sql
-select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) 
-as DISTANCE from SIGHTINGS;
+select * from (
+    select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2))
+    as DISTANCE 
+    from SIGHTINGS
+    order by DISTANCE desc
+) where ROWNUM <= 1;
 ```
 
 ![Part 1](images/task4_1.PNG)
@@ -261,8 +265,12 @@ SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
 ### Part C
 
 ```sql
-select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)) 
-as DISTANCE from SIGHTINGS;
+select * from (
+    select SIGHTING_ID, sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2))
+    as DISTANCE 
+    from SIGHTINGS
+    order by DISTANCE desc
+) where ROWNUM <= 1;
 ```
 
 ![Part 2](images/task4_2.PNG)
@@ -272,7 +280,7 @@ The index will be indexing the queries, so when the database goes to calculate t
 the equation in the index, and return the precomputed value if found.
 
 We don't get massive performance boosts because a lot of the distances are unique. However if there was 
-many duplicates, such as birds at the exact same position, there would be more noticable improvments.
+many duplicates, such as birds at the exact same position, there would be more noticable improvements.
 
 ## Task 5: Execution Plan and Analysis
 
