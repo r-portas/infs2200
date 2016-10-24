@@ -239,6 +239,8 @@ SELECT * FROM MV_ORGANISATION_BIRD_COUNT;
 ![Part 2](images/task3_2.PNG)
 \ 
 
+The materialized view is much faster because the data is stored in a table, instead of having to be queried through the other tables.
+
 ## Task 4: Function Based Indexes
 
 ### Part A
@@ -324,4 +326,14 @@ where SIGHTINGS.SPOTTER_ID = 1255;
 SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 ```
 
+### Part C
 
+Tree Height: 2
+
+Leaf Blocks: 9
+
+Block accesses needed for a direct full scan of the BIRDS table:
+
+= `Number of leaf blocks + Number of branch blocks`
+= `9 + 1`
+= `10`

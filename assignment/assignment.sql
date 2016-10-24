@@ -105,6 +105,8 @@ select * from sightings where sighting_date = '09-MAR-2016';
 
 /* Part A */
 
+set timing on;
+
 create or replace view V_ORGANISATION_BIRD_COUNT as select org.ORGANISATION_NAME, count(*) "bird_count"
 from ORGANISATIONS org
 inner join SPOTTERS sp
@@ -122,6 +124,9 @@ inner join SIGHTINGS si
 	on sp.SPOTTER_ID = si.SPOTTER_ID
 group by ORGANISATION_NAME;
 
+select * from V_ORGANISATION_BIRD_COUNT;
+select * from MV_ORGANISATION_BIRD_COUNT;
+
 /* Task 4: function Based Indexes */
 
 /* Part A */
@@ -134,6 +139,7 @@ select * from (
 
 /* Part B #TODO: Verify*/
 create index IDX_HEADQUARTERS_DISTANCE on SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
+commit;
 
 /* Task 5: Execution Plan and Analysis */
 
