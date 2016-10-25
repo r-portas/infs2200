@@ -260,8 +260,11 @@ select * from (
 ### Part B
 
 ```sql
-create index IDX_HEADQUARTERS_DISTANCE on 
-SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
+create index IDX_HEADQUARTERS_DISTANCE on SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
+commit;
+
+analyze INDEX IDX_HEADQUARTERS_DISTANCE VALIDATE STRUCTURE;
+commit;
 ```
 
 ### Part C
