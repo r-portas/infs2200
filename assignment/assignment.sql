@@ -141,6 +141,7 @@ select * from (
 create index IDX_HEADQUARTERS_DISTANCE on SIGHTINGS(sqrt(power((LATITUDE + -28), 2) + power((LONGITUDE + 151), 2)));
 commit;
 
+/* I believe this refreshes part of the database to ensure the index is running */
 analyze INDEX IDX_HEADQUARTERS_DISTANCE VALIDATE STRUCTURE;
 commit;
 
@@ -170,6 +171,8 @@ drop constraint FK_SPOTTER_ID_TO_SPOTTER_ID;
 
 alter table SPOTTERS
 drop constraint PK_SPOTTER_ID;
+
+drop index PK_SPOTTER_ID;
 
 explain plan for select SIGHTING_ID, SPOTTER_NAME, SIGHTING_DATE 
 from SIGHTINGS 

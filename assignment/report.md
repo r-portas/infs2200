@@ -297,7 +297,14 @@ from SIGHTINGS
 inner join SPOTTERS
 	on SPOTTERS.SPOTTER_ID = SIGHTINGS.SPOTTER_ID
 where SIGHTINGS.SPOTTER_ID = 1255;
+```
 
+Running the above command yields to following result
+
+![Part 1 timing](images/task5_1_time.PNG)
+
+
+```sql
 SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 ```
 
@@ -320,14 +327,29 @@ drop constraint FK_SPOTTER_ID_TO_SPOTTER_ID;
 alter table SPOTTERS
 drop constraint PK_SPOTTER_ID;
 
+drop index PK_SPOTTER_ID;
+
 explain plan for select SIGHTING_ID, SPOTTER_NAME, SIGHTING_DATE 
-from SIGHTINGS 
+from SIGHTINGS
+```
+
+Running the above command yields the following time
+
+![Part 2 timing](images/task5_2_time.PNG)
+
+```
 inner join SPOTTERS
 	on SPOTTERS.SPOTTER_ID = SIGHTINGS.SPOTTER_ID
 where SIGHTINGS.SPOTTER_ID = 1255;
 
 SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 ```
+
+With the primary key of spotter removed, the database is unable to do a unique scan through the table, instead it needs to do a HASH join, which creates a hash table on one of the tables and scans the other table, matching between the hash table and other table.
+
+This method is actually faster to execute, because the query optimizer will filter both tables by `SPOTTER_ID`, which means the size of both tables would be small. This is because the `SPOTTERS` table should only have a single match to the given `SPOTTER_ID`, assuming the data has not been changed since the primary key has been dropped.
+
+The other table will only contain the number of spottings the given `SPOTTER_ID` has, which is a very small subset of the entire table. Then both tables are joined, which is quick since both tables are small.
 
 ### Part C
 
