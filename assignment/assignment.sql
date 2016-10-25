@@ -184,4 +184,9 @@ SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 
 /* Part C */
 analyze index PK_BIRD_ID validate structure offline;
-select * from INDEX_STATS;
+
+select HEIGHT from INDEX_STATS;
+
+select LF_BLKS from INDEX_STATS;
+
+select BR_BLKS from INDEX_STATS;

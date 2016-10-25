@@ -301,7 +301,7 @@ where SIGHTINGS.SPOTTER_ID = 1255;
 
 Running the above command yields to following result
 
-![Part 1 timing](images/task5_1_time.PNG)
+![Part 1 timing](images/task5_1_select.PNG)
 
 
 ```sql
@@ -335,7 +335,7 @@ from SIGHTINGS
 
 Running the above command yields the following time
 
-![Part 2 timing](images/task5_2_time.PNG)
+![Part 2 timing](images/task5_2_select.PNG)
 
 ```
 inner join SPOTTERS
@@ -352,13 +352,30 @@ This method is actually faster to execute, because the query optimizer will filt
 The other table will only contain the number of spottings the given `SPOTTER_ID` has, which is a very small subset of the entire table. Then both tables are joined, which is quick since both tables are small.
 
 ### Part C
+```sql
+analyze index PK_BIRD_ID validate structure offline;
+```
 
-Tree Height: 2
+Tree Height: 
+```sql
+select HEIGHT from INDEX_STATS;
+```
+Tree height is __2__
 
-Leaf Blocks: 9
+Leaf Blocks:
+```sql
+select LF_BLKS from INDEX_STATS;
+```
+__9__ leaf blocks
 
 Block accesses needed for a direct full scan of the BIRDS table:
+```sql
+select LF_BLKS from INDEX_STATS;
+select BR_BLKS from INDEX_STATS;
+```
 
-= `Number of leaf blocks + Number of branch blocks`
-= `9 + 1`
-= `10`
+```
+= Number of leaf blocks + Number of branch blocks
+= 9 + 1
+= 10
+```
