@@ -1,5 +1,40 @@
 # Final Exam Review
 
+## Formulas
+```
+blocking factor (bfr) = floor(block size / record size)
+
+blocks = ceiling(number of records / blocking factor)
+
+wasted space per block = block size - (blocks * blocking factor)
+
+transfer rate = blocks / block transfer rateA
+```
+
+## Searches
+
+### Linear Search - Not Sorted
+- Search on a key field:
+    - Half the file blocks are search on average
+    - `number of blocks / 2`
+- Search on a non-key field:
+    - All blocks must be searched
+
+### Binary Search - Sorted
+- Average number of block accesses = `log(2) number of blocks`
+- Time to search for a record = `Ceiling (log(2) b) * (s + rd + btt)`
+
+## B+ Tree Insertion
+
+### Leaf Node
+1. Split leaf node
+2. Copy up first key of the newly created leaf into the parent
+3. Insert a pointer to the new leaf from the the new parent node
+
+### Internal Node
+1. Redistribute entries evenly
+2. __Move__ the middle key up
+
 ## Concurrency Control
 - Helps prevent:
     - The __lost update__ problem

@@ -18,6 +18,10 @@ D: Durability, data is persistant
 
 ### 1.3) Explain the 3 main heuristics used in algebraic query optimization
 
+1. Selection operations are performed as _early_ as possible to reduce the number of _tuples_
+2. Projection operations are performed as _early_ as possible to reduce the number of _attributes_
+3. The selection and joining operations that are the _most restrictive_ are executed first
+
 ### 1.4) In the timeout mechanism for handling deadlocks, compare the pros and cons of long timeout vs short timeout
 
 __Long timeout__:
@@ -40,11 +44,19 @@ Row size 200
 4000 bytes per block
 20 bytes per entry
 
-Total size: 100 000 * 20
-            2 000 000
+index blocking factor:  4000 / 20
+                        200 entries per block 
 
-Number of blocks:   2 000 000 / 4000
-                    500
+worst case is when blocks are half full, 
+thus we assume 100 entries per block
+
+number of index blocks accessed = ceiling (log(bfr) e)
+                                = ceiling(log(100) 100000)
+                                = ceiling(2.5)
+                                = 3 + 1 (root)
+
+number of index blocks
+
 ```
 
 ### 2.3)
@@ -60,8 +72,11 @@ number of leaf blocks:  100 000 / 20
 50 blocks for the next level
 1 block for the root level
 
-3 levels, including leaf
+number of index blocks accessed:    ceiling(log(bfr) e)
+                                    ceiling(log(50) 5000)
+                                    ceiling(2.17)
 
+Total number of blocks accessed = 3 + 1 = 4
 ```
 
 ## Q3
