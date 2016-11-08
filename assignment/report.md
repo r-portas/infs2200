@@ -302,6 +302,7 @@ where SIGHTINGS.SPOTTER_ID = 1255;
 Running the above command yields to following result
 
 ![Part 1 timing](images/task5_1_select.PNG)
+\ 
 
 
 ```sql
@@ -330,20 +331,17 @@ drop constraint PK_SPOTTER_ID;
 drop index PK_SPOTTER_ID;
 
 explain plan for select SIGHTING_ID, SPOTTER_NAME, SIGHTING_DATE 
-from SIGHTINGS
-```
-
-Running the above command yields the following time
-
-![Part 2 timing](images/task5_2_select.PNG)
-
-```
+from SIGHTINGS 
 inner join SPOTTERS
 	on SPOTTERS.SPOTTER_ID = SIGHTINGS.SPOTTER_ID
 where SIGHTINGS.SPOTTER_ID = 1255;
 
 SELECT PLAN_TABLE_OUTPUT FROM TABLE (DBMS_XPLAN.DISPLAY);
 ```
+
+Running the above command yields the following time
+
+![Part 2 timing](images/task5_2_select.PNG)
 
 With the primary key of spotter removed, the database is unable to do a unique scan through the table, instead it needs to do a HASH join, which creates a hash table on one of the tables and scans the other table, matching between the hash table and other table.
 
