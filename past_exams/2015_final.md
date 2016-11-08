@@ -81,4 +81,36 @@ Total number of blocks accessed = 3 + 1 = 4
 
 ## Q3
 
+### Q3.1)
+
+Valid
+
+### Q3.2)
+
+Not valid, the right hand side is equilavent to AND, not OR
+
+### Q3.3)
+
+Not valid, the RHS projection loses the C attribute before the select
+
+### Q3.4)
+
+Not valid, the RHS projects without the common attribute D which is needed to join
+
+## Q4
+
+### Q4.1)
+
+1. Do the cross product of Student and Transcript
+2. Select the rows where the Id = StudID and CrsCode = 'INFS2200' and Semester='2015'
+3. Project only the name
+
+The query is joining ALL the tables, which is very expensive. Additionally the projection is done last, so the selection is selecting all the columns, which is a lot since its the cross product of two tables.
+
+### Q4.2)
+```
+P[name](S[Id=StudId](S[CrsCode='infs2200' and Semester='2015'](P[Id, CrsCode, Semester](Transcript)) x P[Name, StudId](Student)))
+```
+
+## Q5)
 
